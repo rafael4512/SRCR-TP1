@@ -30,7 +30,7 @@ nao( Questao ).
 si( Questao,verdadeiro ) :-
     Questao.
 si( Questao,falso ) :-
-    -Questao.
+    -Questao.	
 si( Questao,desconhecido ) :-
     nao( Questao ),
     nao( -Questao ).
@@ -46,3 +46,18 @@ si( Questao,desconhecido ) :-
 e_ad(municipio_de_alto_de_basto,705330336,portugal).
 e_ada(associados_sociedade_de_advogados_sp_rl,702675112,portugal).
 contrato(705330336,702675112,aquisicao_de_servicos,consulta_previa,assessoria_juridica,13599,547,alto_de_basto,"11-02-2020").
+
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%
+
++ed_ad(Nome,Nif,Morada) :: (findall(Nif,ed_ad(Nome,Nif,_), S),
+                length(S,N), N == 0).
+
+-ed_ad(Nome,Nif,Morada):-
+	nao(ed_ad(Nome,Nif,Morada)) .
+
+
+
+
