@@ -12,7 +12,7 @@
 % SICStus PROLOG: definicoes iniciais
 
 :- op( 900,xfy,'::' ).
-:- dynamic jogo/3.
+:- dynamic e_ad/3.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do meta-predicado nao: Questao -> {V,F}
@@ -35,6 +35,41 @@ si( Questao,desconhecido ) :-
     nao( Questao ),
     nao( -Questao ).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensao do meta-predicado evolucao e involucao.
+
+evolucao( Termo ) :-
+    findall( Invariante,+Termo::Invariante,Lista ),
+    insercao( Termo ),
+    teste( Lista ).
+
+
+
+involucao( Termo ) :-
+    findall( Invariante,-Termo::Invariante,Lista ),
+    remocao( Termo ),
+    teste( Lista ).
+
+
+teste( [] ).
+teste( [R|LR] ) :-
+    R,
+    teste( LR ).
+
+insercao( Termo ) :-
+    assert( Termo ).
+insercao( Termo ) :-
+    retract( Termo ), !,fail.
+	
+
+
+remocao( Termo ) :-
+    retract( Termo ).
+remocao( Termo ) :-
+    assert( Termo ),!,fail.
+
+
+
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -50,13 +85,43 @@ contrato(705330336,702675112,aquisicao_de_servicos,consulta_previa,assessoria_ju
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-%
+% Serve para não inserir entidades repetidas.(Nao pode haver nomes iguais nem nifs  iguais, mas pode haver moradas!)
+% FEITO
 
-+ed_ad(Nome,Nif,Morada) :: (findall(Nif,ed_ad(Nome,Nif,_), S),
-                length(S,N), N == 0).
+% Para as  entidades ad
++e_ad(Nome,Nif,Morada) :: (findall( ( (Nome,Nif) ),(e_ad(Nome,_,_);e_ad(_,Nif,_) ), S),
+                length(S,N), N == 2).
 
--ed_ad(Nome,Nif,Morada):-
-	nao(ed_ad(Nome,Nif,Morada)) .
+-e_ad(Nome,Nif,Morada):-
+	nao(e_ad(Nome,Nif,Morada)).	
+
+% Para as  entidades ada
+
++e_ada(Nome,Nif,Morada) :: (findall( ( (Nome,Nif) ),(e_ada(Nome,_,_);e_ada(_,Nif,_) ), S),
+                length(S,N), N == 2).
+
+-e_ada(Nome,Nif,Morada):-
+	nao(e_ada(Nome,Nif,Morada)).	
+
+
+
+
+
+
+% Testes
+% evolucao(e_ad(o,705330336,ola2)).
+% evolucao(e_ad(municipio_de_alto_de_basto,705330336,ola2)).
+% evolucao(e_ad(municipio_de_alto_de_basto,705330331,ola2)).
+% evolucao(e_ad(o2,702533032,ola2)). (Teste que tem de funcionar)
+% findall((M;N),e_ad(M,N,_),S).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+
+
+
+
+
 
 
 
