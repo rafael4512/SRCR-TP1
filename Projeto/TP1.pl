@@ -1,5 +1,12 @@
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Trabalho pratico 1
+% Trabalho pratico 1-Sistema para contratação publica.
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Modulos
+% :- use_module(library(lists)).
+
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % SICStus PROLOG: Declaracoes iniciais
@@ -13,6 +20,8 @@
 
 :- op( 900,xfy,'::' ).
 :- dynamic e_ad/3.
+:- dynamic e_ada/3.
+:- dynamic contrato/10.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do meta-predicado nao: Questao -> {V,F}
@@ -80,23 +89,27 @@ remocao( Termo ) :-
 
 e_ad(municipio_de_alto_de_basto,705330336,portugal).
 e_ada(associados_sociedade_de_advogados_sp_rl,702675112,portugal).
-contrato(705330336,702675112,aquisicao_de_servicos,consulta_previa,assessoria_juridica,13599,547,alto_de_basto,"11-02-2020").
-
+contrato(1,705330336,702675112,aquisicao_de_servicos,consulta_previa,assessoria_juridica,13599,547,alto_de_basto,"11-02-2020").
+% meter ID no contratato.
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Serve para não inserir entidades repetidas.(Nao pode haver nomes iguais nem nifs  iguais, mas pode haver moradas!)
-% FEITO
+% Invariantes Estruturais e Referenciais.
 
-% Para as  entidades ad
+
+% ************* Adjudicante **************************
+
+% Garante que não é possível adicionar entidades Adjudicantes com o mesmo Nome ou  Nif. 
 +e_ad(Nome,Nif,Morada) :: (findall( ( (Nome,Nif) ),(e_ad(Nome,_,_);e_ad(_,Nif,_) ), S),
                 length(S,N), N == 2).
 
+% Garante que não seja possivel a remocao de uma entidade Adjudicante
 -e_ad(Nome,Nif,Morada):-
 	nao(e_ad(Nome,Nif,Morada)).	
 
-% Para as  entidades ada
+% ************* Adjudicataria **************************
 
+%
 +e_ada(Nome,Nif,Morada) :: (findall( ( (Nome,Nif) ),(e_ada(Nome,_,_);e_ada(_,Nif,_) ), S),
                 length(S,N), N == 2).
 
@@ -104,19 +117,40 @@ contrato(705330336,702675112,aquisicao_de_servicos,consulta_previa,assessoria_ju
 	nao(e_ada(Nome,Nif,Morada)).	
 
 
+% ************* Contratos **************************
+
+% Garante que não é possivel adicionar um  contrato, onde  o preço contratual acumulado dos contratos já celebrados seja igual ou superior a 75.000 euros.
+%Falta  fazer o verificar prazo
++contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :: ( findall( C,   contrato(_,Nif_ad,Nif_ada,TipoC,_,_,C,_,_,_), S),
+                                                                                 sum_list(S,Total),
+                                                                                 Total < 75000 ).
 
 
 
 
-% Testes
-% evolucao(e_ad(o,705330336,ola2)).
-% evolucao(e_ad(municipio_de_alto_de_basto,705330336,ola2)).
-% evolucao(e_ad(municipio_de_alto_de_basto,705330331,ola2)).
-% evolucao(e_ad(o2,702533032,ola2)). (Teste que tem de funcionar)
-% findall((M;N),e_ad(M,N,_),S).
+
+
+
+
+
+% verificaPazo(Prazo,Data):-
+% format_time(3,"%d-%m-%Y",date(D,M,Y)).
+
+
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Funçoes AUXILIARES 
 
+
+
+% Soma de listas
+sum_list(Xs, Sum) :-
+      sum_list(Xs, 0, Sum).
+  
+sum_list([], Sum, Sum).
+sum_list([X|Xs], Sum0, Sum) :-
+      Sum1 is Sum0 + X,
+      sum_list(Xs, Sum1, Sum).
 
 
 
