@@ -35,23 +35,28 @@
                 length(S,N), N == 2).
 
 
+% Garante que não seja possivel a remocao de uma entidade Adjudicante com contrato celebrados.
+-e_ad(Nome,Nif,Morada) :: (findall(Id,contrato(Id,_,Nif,_,_,_,_,_,_,_),S),
+                          length(S,0)).
 
 
 
 
-
-% Garante que não seja possivel a remocao de uma entidade Adjudicante
--e_ad(Nome,Nif,Morada):-
-	nao(e_ad(Nome,Nif,Morada)).	
 
 % ************* Adjudicataria **************************
 
-%
+% Garante que insere  uma entidade Adjudicataria com um nif e nome diferente das existentes.
 +e_ada(Nome,Nif,Morada) :: (findall( ( (Nome,Nif) ),(e_ada(Nome,_,_);e_ada(_,Nif,_) ), S),
                 length(S,N), N == 2).
 
--e_ada(Nome,Nif,Morada):-
-	nao(e_ada(Nome,Nif,Morada)).	
+
+% Garante que não remove entidades Adjudicataria que tem contratos celebrados.
+-e_ada(Nome,Nif,Morada) :: (findall(Id,contrato(Id,_,Nif,_,_,_,_,_,_,_),S),
+                          length(S,0)).
+	
+
+
+
 
 
 % ************* Contratos **************************
@@ -65,28 +70,27 @@
 +contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :: (TipoP= ajuste_direto;TipoP= consulta_previa,TipoP= concurso_publico).
 
 
-% Garante as condições impostas  por um contrato de ajuste direto.
+% Garante as condições impostas  por um contrato de ajuste direto.(Falta os prazos pois so pode durar ate 1 ano)
 +contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :: (TipoP = ajuste_direto, 
                                                                               Custo =<   5000,  
                                                                               (TipoC=contrato_de_aquisicao;TipoC=locao_de_bens_moveis;TipoC=aquisicao_de_servicos)).
 
 
 
-% >Garante que não é possivel adicionar um  contrato, onde  o preço contratual acumulado dos contratos já celebrados seja igual ou superior a 75.000 euros.
+% >Garante que não é possivel adicionar um  contrato, onde  o preço contratual acumulado dos contratos já celebrados seja igual ou superior a 75.000 euros.FALTA  OS PRAZOS
 +contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :: ( findall( C,   contrato(_,Nif_ad,Nif_ada,TipoC,_,_,C,_,_,_), S),
                                                                                  sum_list(S,Total),
                                                                                  Total < 75000 ).
 
 
-
-
-
+% Garante que só seja possivel remover contratos quando? ......
+% -contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) ::
 
 
 
 
 % verificaPazo(Prazo,Data,X):-
-% format_time(3,"%d-%m-%Y",date(D,M,Y)).
+% format_time(date(D,M,Y)/3,"%d-%m-%Y",date(D,M,Y) ).
 
 
 

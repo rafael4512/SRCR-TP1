@@ -73,3 +73,17 @@ sum_list([X|Xs], Sum0, Sum) :-
       sum_list(Xs, Sum1, Sum).
 
 
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
