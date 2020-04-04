@@ -88,9 +88,7 @@
 
 
 
-
-% verificaPazo(Prazo,Data,X):-
-% format_time(date(D,M,Y)/3,"%d-%m-%Y",date(D,M,Y) ).
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 
 
