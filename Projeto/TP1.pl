@@ -89,9 +89,32 @@
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Procedimentos de evolução do conhecimento.
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+%************** Adicionar conhecimento ****************
+
+% Regista uma entidade Adjudicante
+novoAdjudicante(Nome,Nif,Morada) :- evolucao(e_ad(Nome,Nif,Morada)).
+
+% Regista uma entidade Adjudicataria
+novaAdjudicataria(Nome,Nif,Morada) :- evolucao(e_ada(Nome,Nif,Morada)).
+
+% Regista um contrato
+novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :- evolucao(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data)).
 
 
 
+%************** Remover conhecimento ****************
+
+% Remove uma entidade Adjudicante.
+removerAdjudicante(Nif) :- encontraAdjudicante(Nif,Ad) , involucao(Ad).
+
+% Remove uma entidade Adjudicataria.
+removerAdjudicataria(Nif) :- encontraAdjudicataria(Nif,Ada) , involucao(Ada).
+
+% Remove um contrato.
+removerContrtato(Id) :- encontraContrato(Id,C) , involucao(C).
 
 
 

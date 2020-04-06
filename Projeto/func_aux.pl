@@ -1,4 +1,3 @@
-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Funções auxiliares
 
@@ -26,7 +25,7 @@ nao( Questao ).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do meta-predicado evolucao e involucao.
-
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 evolucao( Termo ) :-
     findall( Invariante,+Termo::Invariante,Lista ),
     insercao( Termo ),
@@ -58,8 +57,8 @@ remocao( Termo ) :-
     assert( Termo ),!,fail.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% listas
-
+% Listas
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 
 
@@ -75,15 +74,19 @@ sum_list([X|Xs], Sum0, Sum) :-
 
 
       
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Pesquisa na base de conhecimento.
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+% Encontrar um adjudicante dado o NIF.
+encontraAdjudicante(Nif,Ad) :- findall(e_ad(Nome,Nif,Morada),e_ad(Nome,Nif,Morada) ,Ad).
 
 
+% Encontrar uma adjudicataria por NIF.
+encontraAdjudicataria(Nif,Ada) :- findall(e_ada(Nome,Nif,Morada),e_ada(Nome,Nif,Morada) ,Ada).
 
 
-
-
-
-
-
-
+% Encontrar um contrato por Id.
+encontraContrato(Id,C) :- findall(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) ,C).
 
 
