@@ -90,3 +90,27 @@ encontraAdjudicataria(Nif,Ada) :- findall(e_ada(Nome,Nif,Morada),e_ada(Nome,Nif,
 encontraContrato(Id,C) :- findall(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) ,C).
 
 
+
+
+
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+
+

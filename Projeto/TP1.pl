@@ -1,6 +1,14 @@
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Trabalho pratico 1-Sistema para contratação publica.
 
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%Modulo para obter o dia da maquina.
+:- use_module(library(system), 
+        [datime/1,now/1]).
+
+
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % SICStus PROLOG: Declaracoes iniciais
 
@@ -21,7 +29,7 @@
 
 :- include('func_aux.pl').
 :- include('baseDeConhecimento.pl').
-
+:- include('datas.pl').
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -119,4 +127,8 @@ removerContrtato(Id) :- encontraContrato(Id,C) , involucao(C).
 
 
 
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
