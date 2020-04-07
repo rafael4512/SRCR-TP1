@@ -2,6 +2,20 @@
 % Datas 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
+:- dynamic stringToNumber/2.
+:- dynamic strToNum/3.
+:- dynamic converterData/2.
+:- dynamic conv_DateToParam/4.
+
+:- dynamic dateToDays/4.
+:- dynamic ytoDay/2.
+:- dynamic mtoDay/3.
+:- dynamic countmonth/3.
+
+:- dynamic maior/3.
+:- dynamic verificaPrazo/3.
+
+
 
 
 %converte uma string com um digito em um inteiro.
@@ -29,15 +43,25 @@ strToNum([H|T],S,R):-  S2 is S-1 ,
 
 
 % Convete uma data para o formato Americano.(Y-M-D)
-
-converterData([],D).
 converterData([C0,C1,C2,C3,C4,C5,C6,C7,C8,C9],D):-  strToNum([C6,C7,C8,C9],4,R1),
 													strToNum([C3,C4],2,R2),
 													strToNum([C0,C1],2,R3),
-													converterData([],date(R1,R2,R3)).
+													(D = date(R1,R2,R3)) .
 
 
 
+
+
+% Converte string Data para os Dia, mes e ano .
+conv_DateToParam([C0,C1,C2,C3,C4,C5,C6,C7,C8,C9],D,M,A):-strToNum([C6,C7,C8,C9],4,A),
+													     strToNum([C3,C4],2,M),
+													     strToNum([C0,C1],2,D).
+													   
+
+
+
+% converter datime(X) em dia mes ano .
+curdate(D1,M1,A1):- datime(datime(A1,M1,D1,_,_,_)).
 
 
 
@@ -45,17 +69,21 @@ converterData([C0,C1,C2,C3,C4,C5,C6,C7,C8,C9],D):-  strToNum([C6,C7,C8,C9],4,R1)
 % Predicados para converter tudo para dias
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-
+% Converte uma data para dias.
 dateToDays(D,M,A,Days):-  Bissexto is mod(A,4),
 						  ytoDay(A,R2), 
- 						  mtoDay(Bissexto,M,R1), 
+ 						  countmonth(Bissexto,M,R1), 
  						  Days is D+R1+R2.
 
 
-%anos para dias
-ytoDay(Y,D):- X is div(Y,4),
-			 X1 is Y - X,
-			 D is X*366 + X1*365.
+
+
+
+% Converte anos para dias. Estou a partir 1-1-0001. 
+ytoDay(Y,D):- Y1 is Y - 1, 
+			  X is div(Y1,4),
+			  X1 is Y1 - X,
+			  D is X*366 + X1*365.
 
 
 
@@ -74,28 +102,46 @@ mtoDay(_,9,30).
 mtoDay(_,10,31).
 mtoDay(_,11,30).
 mtoDay(_,12,31).
+mtoDay(_,_,0).
+
+
+% Incrementa o numero de dias dado um mes .Por exemplo, no mês de março aindo só passaram os dias de janeiro e fevereiro.
+countmonth(X,0,0).
+countmonth(X,M,R) :-M1 is M-1 ,
+					mtoDay(X,M1,P),
+					countmonth(X,M1,AUX),
+					R is P+AUX.
 
 
 
 
 
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Comparar Datas
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+% Seve de função auxiliar para saber se um contrato está caducado ou não.
+maior(X,Y,R):- X >= Y , R = em_vigor.
+maior(X,Y,R):- X < Y ,  R = caducado.
 
 
 
 
 
+%verifica o prazo de um contrato.Se um contrato tem 
+verificaPrazo(Data,Prazo,Res):-  conv_DateToParam(Data,D,M,A), 
+	  					  		 dateToDays(D,M,A,Days),
+	  					  		 R1 is Days +Prazo,
+	  					         curdate(D1,M1,S1),
+						         dateToDays(D1,M1,S1,Days2),
+						         maior(R1,Days2,Res).
+
+						  		
+% verificaPrazo("31-01-2020",100,R).
 
 
 
-
-
-
-
-
-% converterData("01-02-2020",X).
-
-% date(2021,2,1).
 
 
 
