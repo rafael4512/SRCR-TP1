@@ -17,6 +17,15 @@
 
 
 
+:- dynamic anosEcoData/2.
+:- dynamic diasAno/2.
+:- dynamic ano/2.
+
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Coverter Strings em  Datas
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %converte uma string com um digito em um inteiro.
 stringToNumber("0",0).
@@ -33,13 +42,12 @@ stringToNumber("9",9).
 
 
 % converte uma string(que é um numero), em um inteiro.
-strToNum([],0,X1).
-strToNum([X],1,P):-	stringToNumber([X],P),strToNum([],0,P).
-strToNum([H|T],S,R):-  S2 is S-1 , 
-					   stringToNumber([H],H1),
- 					   S1 is H1*10^S2 ,
- 					   strToNum(T,S2,AUX), 
- 					   R is AUX+S1.	
+ strToNum([X],1,P):-stringToNumber([X],P).
+ strToNum([H|T],S,R):-  S2 is S-1 , 
+ 					   stringToNumber([H],H1),
+  					   S1 is H1*(10^S2),
+  					   strToNum(T,S2,AUX), 
+  					   R is AUX+S1.	
 
 
 % Convete uma data para o formato Americano.(Y-M-D)
@@ -60,7 +68,7 @@ conv_DateToParam([C0,C1,C2,C3,C4,C5,C6,C7,C8,C9],D,M,A):-strToNum([C6,C7,C8,C9],
 
 
 
-% converter datime(X) em dia mes ano .
+% Obtem a data atual.
 curdate(D1,M1,A1):- datime(datime(A1,M1,D1,_,_,_)).
 
 
@@ -143,5 +151,34 @@ verificaPrazo(Data,Prazo,Res):-  conv_DateToParam(Data,D,M,A),
 
 
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Consultar Datas
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+
+% Dado uma data saber o ano económico em curso e nos dois anos económicos anteriores.
+
+anosEcoData([C0,C1,C2,C3,C4,C5,C6,C7,C8,C9],A):-  strToNum([C6,C7,C8,C9],4,R),
+											  R1 is R-1,R2 is R-2,
+											  A =[R2,R1,R].
+
+
+%Dado uma data, saber quantos dias tem o corresponde ano.(#365, ou #366).
+
+diasAno([C0,C1,C2,C3,C4,C5,C6,C7,C8,C9],Dias):- strToNum([C6,C7,C8,C9],4,R1), 
+											     R is mod(R1,4),
+											     ((R = 0,Dias=366); Dias=365).
+
+
+%Ano de uma data.
+ano([C0,C1,C2,C3,C4,C5,C6,C7,C8,C9],A):- strToNum([C6,C7,C8,C9],4,A).
+
+
+
+
+%Verifica se uma data é o dia atual.
+
+data_Atual(Data,sim):-conv_DateToParam(Data,D,M,A), curdate(D,M,A).
+data_Atual(_,nao).
 
 

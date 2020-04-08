@@ -78,21 +78,24 @@
 +contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :: (TipoP= ajuste_direto;TipoP= consulta_previa,TipoP= concurso_publico).
 
 
-% Garante as condições impostas  por um contrato de ajuste direto.(Falta os prazos pois so pode durar ate 1 ano)
-+contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :: (TipoP = ajuste_direto, 
+% Garante as condições impostas  por um contrato de ajuste direto.
++contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :: (TipoP = ajuste_direto,
+                                                                              diasAno(Data,MaxDias),
+                                                                              Prazo=<MaxDias,
                                                                               Custo =<   5000,  
                                                                               (TipoC=contrato_de_aquisicao;TipoC=locao_de_bens_moveis;TipoC=aquisicao_de_servicos)).
 
 
 
-% >Garante que não é possivel adicionar um  contrato, onde  o preço contratual acumulado dos contratos já celebrados seja igual ou superior a 75.000 euros.FALTA  OS PRAZOS
-+contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :: ( findall( C,   contrato(_,Nif_ad,Nif_ada,TipoC,_,_,C,_,_,_), S),
-                                                                                 sum_list(S,Total),
-                                                                                 Total < 75000 ).
+% > Regra dos 3 anos->Garante que não é possivel adicionar um  contrato, onde  o preço contratual acumulado dos contratos já celebrados seja igual ou superior a 75.000 euros.
++contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :: (anosEcoData(Data,Anos), 
+                                                                              somarContratos(Nif_ad,Nif_ada,Anos,Total), 
+                                                                              Total < 75000 ).
 
 
-% Garante que só seja possivel remover contratos quando? ......
-% -contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) ::
+% Garante que só seja possivel remover contratos celebrados no dia.
+ -contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :: data_Atual(Data,sim).
+
 
 
 

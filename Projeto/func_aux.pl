@@ -61,15 +61,16 @@ remocao( Termo ) :-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 
+% Soma os elementos da lista.
+sum_list([[]],0).
+sum_list([],0).
+sum_list([H|T],R) :- sum_list(T,R1), R is R1+H.
 
-% Soma de listas
-sum_list(Xs, Sum) :-
-      sum_list(Xs, 0, Sum).
-  
-sum_list([], Sum, Sum).
-sum_list([X|Xs], Sum0, Sum) :-
-      Sum1 is Sum0 + X,
-      sum_list(Xs, Sum1, Sum).
+
+% Verifica se um elemento existe na lista.
+x_existe_lista(X, [],nao).
+x_existe_lista(X, [X|T] ,sim). 
+x_existe_lista(X, [H|T] ,R) :- x_existe_lista(X,T,R). 
 
 
 
@@ -95,22 +96,30 @@ encontraContrato(Id,C) :- findall(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descric
 
 
      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-     
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%Calculos
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
+% Calcular a soma dos valor dos contratos em vigor respetivos aos anos economicos recebidos como parametro, de uma certa entidade adjudicante e Adjudicataria.
+%verificaPrazo
+somarContratos(Nif_ad,Nif_ada,Anos,Total) :- findall((Data,Custo), (contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data)),S),
+                                             map1(ano,S,Anos,X),
+                                             sum_list(X,Total).
+
+
+%Funções que mapeia um tipo especifico de lista.
+map1(F, [],Anos,[]).
+map1(F,[(H,H1)|T],Anos,[H1|Ps]):- call(F,H,Y),x_existe_lista(Y,Anos,sim) , map1(F,T,Anos,Ps).
+map1(F,[(H,H1)|T],Anos,Ps):- call(F,H,Y),x_existe_lista(Y,Anos,nao) , map1(F,T,Anos,Ps).
+
+
+
+
+% anosEcoData(Data,Anos), somarContratos(Nif_ad,Nif_ada,Anos,Tot). 
+% map1(ano,[("01-01-2020",12000),("01-01-2020",12000),("01-01-2020",12000)],[2020],X).
+
+
+% (705330336,702675112,anosEcoData(Data,L),Tot)
+% somarContratos(705330336,702675112,[2010,2020],Tot).
 
 
