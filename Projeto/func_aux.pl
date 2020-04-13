@@ -3,15 +3,22 @@
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensao do meta-predicado si: Questao,Resposta -> {V,F}
-%                            Resposta = { verdadeiro,falso,desconhecido }
-
+%                            Resposta = { verdadeiro,falso,desconhecido,impreciso,incerto,interdito}
 si( Questao,verdadeiro ) :-
     Questao.
 si( Questao,falso ) :-
-    -Questao.	
-si( Questao,desconhecido ) :-
-    nao( Questao ),
-    nao( -Questao ).
+    -Questao.
+si( Questao,R) :-
+    excecao(Questao,R).
+si( Questao,desconhecido ).
+
+% si( Questao,verdadeiro ) :-
+%     Questao.
+% si( Questao,falso ) :-
+%     -Questao.	
+% si( Questao,desconhecido ) :-
+%     nao( Questao ),
+%     nao( -Questao ).
 
 
 
@@ -90,7 +97,7 @@ encontraAdjudicataria(Nif,Ada) :- findall(e_ada(Nome,Nif,Morada),e_ada(Nome,Nif,
 % Encontrar um contrato por Id.
 encontraContrato(Id,C) :- findall(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) ,C).
 
-
+%PROCURAR por excecoes e  mostrar o nome das entidades.
 
 
 
