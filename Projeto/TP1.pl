@@ -50,7 +50,6 @@
 
 
 
-
 % ************* Adjudicataria **************************
 
 % Garante que insere  uma entidade Adjudicataria com um nif e nome diferente das existentes.
@@ -61,7 +60,7 @@
 % Garante que não remove entidades Adjudicataria que tem contratos celebrados.
 -e_ada(Nome,Nif,Morada) :: (findall(Id,contrato(Id,_,Nif,_,_,_,_,_,_,_),S),
                           length(S,0)).
-	
+
 
 
 
@@ -130,8 +129,6 @@ removerContrtato(Id) :- encontraContrato(Id,C) , involucao(C).
 
 
 
-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 

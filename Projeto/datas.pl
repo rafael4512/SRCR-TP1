@@ -130,8 +130,8 @@ countmonth(X,M,R) :-M1 is M-1 ,
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Seve de função auxiliar para saber se um contrato está caducado ou não.
-maior(X,Y,R):- X >= Y , R = em_vigor.
-maior(X,Y,R):- X < Y ,  R = caducado.
+maior(X,Y,em_vigor):- X >= Y .
+maior(X,Y,caducado):- X < Y .
 
 
 
@@ -142,13 +142,14 @@ verificaPrazo(Data,Prazo,Res):-  conv_DateToParam(Data,D,M,A),
 	  					  		 dateToDays(D,M,A,Days),
 	  					  		 R1 is Days +Prazo,
 	  					         curdate(D1,M1,S1),
-						         dateToDays(D1,M1,S1,Days2),
+						         dateToDays(D1,M1,S1,Days2),!,
 						         maior(R1,Days2,Res).
-
-						  		
-% verificaPrazo("31-01-2020",100,R).
+						  
 
 
+
+% verificaPrazo("31-01-2020",10,R). 
+% verificaPrazo("31-01-2020",10,em_vigor).
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -180,5 +181,7 @@ ano([C0,C1,C2,C3,C4,C5,C6,C7,C8,C9],A):- strToNum([C6,C7,C8,C9],4,A).
 
 data_Atual(Data,sim):-conv_DateToParam(Data,D,M,A), curdate(D,M,A).
 data_Atual(_,nao).
+% -data_Atual(_,nao).
+
 
 

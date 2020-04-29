@@ -41,17 +41,26 @@ contrato(4,700000004,300000001,'Aquisicao de Servicos','Consulta Previa','Fornec
 contrato(5,700000004,300000004,'Aquisicao de Servicos','Concurso Público','Fornecimento de Gas Natural ',30000,365,'Viana do Castelo',"03-01-2010"). % ULSAM-GALP
 contrato(6,700000003,300000003,'Aquisicao de Servicos','Concurso Público','Controlo do trafego aerio ',5000000,1096,'Lisboa',"06-01-2017"). % NAV-TAP
 contrato(7,700000003,300000003,'Locacao de bens moveis','Ajuste Direto','Combustivel para automeveis',5000,30,'Porto',"06-01-2018"). % GALP-TAP
-% contrato(8,700000006,300000005,'Aquisicao de Servicos','Ajuste Direto','Distribuicao de correio',3000,365,'Porto',"06-01-2020"). % PME-CTT
 contrato(9,700000006,700000004,'Aquisicao de Servicos','Consulta Previa','Compra de protecoes contra o Covid19',50000,180,'Lisboa',"01-02-2019"). % PME-ULSAM
 contrato(10,700000005,700000004,'Empreitadas de obras públicas','Consulta Previa','Investimento publico para a construção de um novo hospital ',5000000,180,'Viana do Castelo',"01-01-2020"). % CGD-ULSAM
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Conhecimento imperfeito
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+excecao(e_ad('Municipio de Monção, S.A',700000007,'Monção ou Mazedo'),impreciso).
+excecao(e_ad('EDM - Empresa de Desenvolvimento Mineiro',700000008,'Porto ou Lisboa'),impreciso).
+
+
+excecao(e_ada('REPSOL Portugues, S.A',300000007,'N/A'),incerto).
+excecao(e_ada('N/A',300000008,'Braga'),incerto).
+excecao(e_ada('MOTA-ENGIL',300000009,'Porto'),incerto).
+excecao(e_ada('RADIO POPULAR',300000010,'Porto ou Lisboa'),impreciso).
+
 excecao(contrato(8,700000006,300000005,'Aquisicao de Servicos','Ajuste Direto','Distribuicao de correio',3000,365,'Porto',"06-01-2020"),interdito).
+excecao(contrato(11,700000003,300000005,'Aquisicao de Servicos','Ajuste Direto','Distribuicao de correio',3000,365,'N/A',"23-03-2010"),incerto).
 
-
-% https://www.topster.pt/calendario/tagerechner.php
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -65,21 +74,6 @@ excecao(contrato(8,700000006,300000005,'Aquisicao de Servicos','Ajuste Direto','
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
