@@ -36,10 +36,10 @@ e_ada('PRIO SUPPLY, S.A.',300000006,'Portugal').
 
 contrato(1,700000000,300000000,'Aquisicao de Servicos','Consulta Previa','Fornecimento de petrólio',50000,365,'Lisboa',"01-01-2018"). % CP-PETROGAL
 contrato(2,700000000,700000005,'Aquisicao de Servicos','Ajuste Direto','contrato de intermediação financeira',25000,366,'Lisboa',"01-04-2020"). % CP-CGD
-contrato(3,700000001,300000006,'Aquisicao de Servicos','Concurso Público','Controlo das portagens ',100000,365,'Lisboa',"06-01-2010"). % BRISA-PRIO
+% contrato(3,700000001,300000006,'Aquisicao de Servicos','Concurso Publico','Controlo das portagens ',100000,365,'Lisboa',"06-01-2010"). % BRISA-PRIO
 contrato(4,700000004,300000001,'Aquisicao de Servicos','Consulta Previa','Fornecimento de energia',100000,365,'Viana do Castelo',"06-01-2013"). % ULSAM-EDP
-contrato(5,700000004,300000004,'Aquisicao de Servicos','Concurso Público','Fornecimento de Gas Natural ',30000,365,'Viana do Castelo',"03-01-2010"). % ULSAM-GALP
-contrato(6,700000003,300000003,'Aquisicao de Servicos','Concurso Público','Controlo do trafego aerio ',5000000,1096,'Lisboa',"06-01-2017"). % NAV-TAP
+contrato(5,700000004,300000004,'Aquisicao de Servicos','Concurso Publico','Fornecimento de Gas Natural ',30000,365,'Viana do Castelo',"03-01-2010"). % ULSAM-GALP
+contrato(6,700000003,300000003,'Aquisicao de Servicos','Concurso Publico','Controlo do trafego aerio ',5000000,1096,'Lisboa',"06-01-2017"). % NAV-TAP
 contrato(7,700000003,300000003,'Locacao de bens moveis','Ajuste Direto','Combustivel para automeveis',5000,30,'Porto',"06-01-2018"). % GALP-TAP
 contrato(9,700000006,700000004,'Aquisicao de Servicos','Consulta Previa','Compra de protecoes contra o Covid19',50000,180,'Lisboa',"01-02-2019"). % PME-ULSAM
 contrato(10,700000005,700000004,'Empreitadas de obras públicas','Consulta Previa','Investimento publico para a construção de um novo hospital ',5000000,180,'Viana do Castelo',"01-01-2020"). % CGD-ULSAM
@@ -49,7 +49,7 @@ contrato(10,700000005,700000004,'Empreitadas de obras públicas','Consulta Previ
 % Conhecimento imperfeito
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-excecao(e_ad('Municipio de Monção, S.A',700000007,'Monção ou Mazedo'),impreciso).
+excecao(e_ad('Municipio de Moncao, S.A',700000007,'Moncao ou Mazedo'),impreciso).
 excecao(e_ad('EDM - Empresa de Desenvolvimento Mineiro',700000008,'Porto ou Lisboa'),impreciso).
 
 
@@ -72,12 +72,28 @@ excecao(contrato(11,700000003,300000005,'Aquisicao de Servicos','Ajuste Direto',
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% 
+% Conhecimento Adicionado pelo predicado X.
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 
 
 
+
+% 'CP - Comboios De Portugal' - 'Cc Do Duque 14/20, 1249-109, Misericordia Lisboa, Lisboa'
+% 'Brisa - Autoestradas De Portugal, S.A.' - 'Qta Torre Da Aguilha Edifício Brisa, 2785-599, Sao Domingos Rana Cascais, Lisboa'
+% 'Nav Portugal, Epe' - 'R D Do Aeroporto De Lisboa Edifício 121 3º, 1700-008, Santa Maria Olivais Lisboa, Lisboa'
+% 'Ulsam - Unidade Local De Saude Do Alto Minho' - 'Estr. De Santa Luzia 50, Viana Do Castelo'
+% 'Cgd - Caixa Geral De Depósito, S.A.' - 'Av João Xxi 63, 1000-300, Areeiro Lisboa, Lisboa'
+% 'Pme Investimentos - Sociedade De Investimentos, S.A.' - 'Rua Pedro Homem De Melo, 55, S.3.09, 4150-599 Porto'
+% 
+% 
+% 'Petrogal, S.A.' - 'R Tomás Da Fonseca Torre C, 1600-209, Sao Domingos Benfica Lisboa, Lisboa'
+% 'Edp' - 'Av 24 De Julho 12, 1249-300, Misericordia Lisboa, Lisboa'
+% 'Pingo Doce' -  'R Actor António Silva 7, 1649-033, Lumiar Lisboa, Lisboa'
+% 'Tap Air Portugal' - 'Aeroporto De Lisboa Efifício 27-8 Sala 1, 1700-008, Santa Maria Olivais Lisboa, Lisboa'
+% 'Galp' - 'R Tomás Da Fonseca Torre C, 1600-209, Sao Domingos Benfica Lisboa'
+% 'Ctt - Correios De Portugal, S.A.' - 'Av Dom João Ii 13, 1999-001, Parque Nacoes Lisboa, Lisboa'
+% 'Prio Supply, S.A.' - 'Porto De Pesca De Aveiro Lote B, 3830-565, Gafanha Nazare Ilhavo, Aveiro'
 
 
 

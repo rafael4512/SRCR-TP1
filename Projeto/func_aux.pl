@@ -67,6 +67,9 @@ remocao( Termo ) :-
 % Listas
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
+head([L],L).
+head([L|R],L).
+
 
 % Soma os elementos da lista.
 sum_list([[]],0).
@@ -85,6 +88,7 @@ x_existe_lista(X, [H|T] ,R) :- x_existe_lista(X,T,R).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Pesquisa na base de conhecimento.
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
 
 % Encontrar um adjudicante dado o NIF.
 encontraAdjudicante(Nif,Ad) :- findall(e_ad(Nome,Nif,Morada),
@@ -140,6 +144,16 @@ encontraTodosConAcimaDe(Val,caducado,L) :- findall(contrato(Id,Nif,Nif_ada,TipoC
                                         ( (contrato(Id,Nif,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data);
                                  (excecao(contrato(Id,Nif,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),
                                  TX \= interdito)),Custo >= Val,verificaPrazo(Data,Prazo,caducado),atom_codes(Dat,Data)) ,L).
+
+
+
+
+
+% Encontra apenas as excecoes excecões
+encontraAdjudicanteImp(Nif,Ad):-findall(excecao(e_ad(Nome,Nif,Morada),TX),
+                                    excecao(e_ad(Nome,Nif,Morada),TX),
+                                       Ad).
+
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -

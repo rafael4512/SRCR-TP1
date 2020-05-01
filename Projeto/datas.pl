@@ -1,7 +1,7 @@
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Datas 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-
+% os dinamic é para tirar em PRICÍPIO .... TEMOS DE TESTAR !!!!!!
 :- dynamic stringToNumber/2.
 :- dynamic strToNum/3.
 :- dynamic converterData/2.
