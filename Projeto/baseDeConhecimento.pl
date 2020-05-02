@@ -58,7 +58,8 @@ excecao(e_ada('N/A',300000008,'Braga'),incerto).
 excecao(e_ada('MOTA-ENGIL',300000009,'Porto'),incerto).
 excecao(e_ada('RADIO POPULAR',300000010,'Porto ou Lisboa'),impreciso).
 
-excecao(contrato(8,700000006,300000005,'Aquisicao de Servicos','Ajuste Direto','Distribuicao de correio',3000,365,'Porto',"06-01-2020"),interdito).
+excecao(contrato(('I',8),700000006,300000005,'Aquisicao de Servicos','Ajuste Direto',interdito('Distribuicao de correio'),3000,365,'Porto',"06-01-2020"),interdito).
+excecao(contrato(8,700000006,300000005,'Aquisicao de Servicos','Ajuste Direto','-',3000,365,'Porto',"06-01-2020"),info_interdito).
 excecao(contrato(11,700000003,300000005,'Aquisicao de Servicos','Ajuste Direto','Distribuicao de correio',3000,365,'N/A',"23-03-2010"),incerto).
 
 

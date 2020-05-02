@@ -242,8 +242,8 @@ qsort([(X,Y)|T],L1,R) :- insereOdenado((X,Y),L1,L2),qsort(T,L2,R).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 encontraMaior(ID) :- findall(Id,
                           ((contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data);
-                          (excecao(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX))))
-                          ,L), maior(L,ID).
+                          (excecao(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),TX \= interdito))),
+                          L), maior(L,ID).
      
 maior([],1).
 maior([H],H1) :-  H1 is H + 1.
