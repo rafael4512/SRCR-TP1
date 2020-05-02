@@ -77,6 +77,7 @@
 % Garante que um contrato tem um procedimento válido.
 +contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :: (TipoP= 'Ajuste Direto';TipoP= 'Consulta Previa';TipoP='Concurso Publico').
 
+
 % Garante as condições impostas  por um contrato de ajuste direto.
 +contrato(Id,Nif_ad,Nif_ada,TipoC,'Ajuste Direto',Descricao,Custo,Prazo,Local,Data) ::( 
                                                                                diasAno(Data,MaxDias),
@@ -94,9 +95,15 @@
                                                                        
 
 
+% Garante que as entidades inseridas no contrato existem.
++contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :: (encontraAdjudicante(Nif_ad,[L]), encontraAdjudicataria(Nif_ada, [L1])).
+
+
+
+
+
 % Garante que só seja possivel remover contratos celebrados no dia. % Deveria ser os contratos inseridos no dia.
 %-contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :: data_Atual(Data,sim).
-
 
 
 
@@ -113,23 +120,37 @@ novoAdjudicante(Nome,Nif,Morada) :- evolucao(e_ad(Nome,Nif,Morada)).
 novoAdjudicataria(Nome,Nif,Morada) :- evolucao(e_ada(Nome,Nif,Morada)).
 
 % Regista um contrato
-novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :- evolucao(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data)).
+novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data) :- encontraMaior(Id1), evolucao(contrato(Id1,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data)),write('ID:'),write(Id1).
 
 
 
 %************** Remover conhecimento Perfeito ****************
 %CORRIGIR
 % Remove uma entidade Adjudicante.
-removerAdjudicante(Nif) :- encontraAdjudicante(Nif,Ad) , involucao(Ad).
+removerAdjudicante(Nif) :- encontraAdjudicante(Nif,[L|T]) , involucao(L).
 
 % Remove uma entidade Adjudicataria.
-removerAdjudicataria(Nif) :- encontraAdjudicataria(Nif,Ada) , involucao(head(Ada)).
+removerAdjudicataria(Nif) :- encontraAdjudicataria(Nif,[L|T]) , involucao(L).
 
 % Remove um contrato.
-removerContrato(Id) :- encontraContrato(Id,C) , involucao(C).
+removerContrato(Id) :- encontraContrato(Id,[L|T]) , involucao(L).
+
+
+% encontraAdjudicataria(300000006,Ada). involucao()
 
 
 
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Invariantes para o conhecimento Imperfeito.
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+
+% Garante que não haja contratos com o mesmo Id.
++excecao(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),X) :: (findall(Id,excecao(contrato(Id,_,_,_,_,_,_,_,_,_),_),S),
+                                                                                        length(S,N),
+                                                                                        N==1).
 
 
 
@@ -153,16 +174,34 @@ novoAdjudicataria(Nome,Nif,Morada,impreciso):- encontraEntidade(Nif,[]), evoluca
 
 % ************* Contratos **************************
 
+% Insere um contrato Incerto
+novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,incerto):- processaContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,R),
+  evolucao(excecao(R,incerto)).
+
+% Insere um contrato Incerto.
+novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,impreciso):- processaContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,R),
+  evolucao(excecao(R,impreciso)).
+
+% Insere um contrato Interdito.
+novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,interdito):- evolucao(excecao(contrato(('I',Id),Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),interdito)),
+  processaContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,R),
+  evolucao(excecao(R,info_interdito)).
 
 
-
-novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,interdito):- encontraContrato(Id,[]), 
-  evolucao(excecao(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),interdito)).
-
+processaContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,contrato(Id,R2,R3,R4,R5,R6,R7,R8,R9,R10)):-
+  (processa(Id,R1),processa(Nif_ad,R2),processa(Nif_ada,R3),processa(TipoC,R4),processa(TipoP,R5),processa(Descricao,R6),processa(Custo,R7),processa(Prazo,R8),processa(Local,R9),processa(Data,R10)).
 
 
+processa(interdito(X),'-').
+processa(incerto,'N/A').
+processa(X,X).
+% processa(impreciso(X,[L|M]),'').
 
 
+%novoContrato(3,700000001,300000006,'Aquisicao de Servicos',interdito('Concurso Publico'),'Controlo das portagens ',100000,365,'Lisboa',"06-01-2010",interdito).
+%novoContrato(3,700000001,300000006,'Aquisicao de Servicos',impreciso('Concurso Publico','Consulta Previa'),'Controlo das portagens ',incerto,365,'Lisboa',"06-01-2010",impreciso).
+
+% findall((('I',Id),Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),excecao(contrato(('I',3),Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),_),S).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Procedimentos de substituição do conhecimento ImPerfeito.
@@ -182,19 +221,47 @@ subsE_ada(Nome,Nif,Morada):- findall(excecao(e_ada(Nome,Nif,M),P),excecao(e_ada(
 
 
 
-% subsContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data):-
+subsContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data):- encontraContrato2(Id,[C]),
+  involucao(C), 
+  removeInterdito(Id),
+  novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data).
 
 
-% findall(excecao(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),
-%    excecao(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),S),
+subsContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,TX):- encontraContrato2(Id,[C]),
+  involucao(C), 
+  removeInterdito(Id),
+  novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,TX).
+
+
+
+subsContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data):- encontraContrato2(Id,[C]),
+  involucao(C), 
+  novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data).
+
+
+subsContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,TX):- encontraContrato2(Id,[C]),
+  involucao(C), 
+  novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,TX).
 
 
 
 
 
 
-% (excecao(e_ad(_,Nif,_),_);) 
 
+
+
+removeInterdito(Id):-findall(excecao(contrato(('I',Id),Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),
+  excecao(contrato(('I',Id),Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),[S]),
+  involucao(S).
+
+
+% findall(excecao(contrato(('I',3),Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),
+%   excecao(contrato(('I',3),Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),[S])
+
+
+
+%subsContrato(3,700000001,300000006,'Aquisicao de Servicos','Concurso Publico','Controlo das portagens ',100000,365,'Lisboa',"06-01-2010").
 
 
 %findall(('Municipio de Moncao, S.A',700000007),  (excecao(e_ad(_,700000007,_),_) ; excecao(e_ad('Municipio de Moncao, S.A',_,_),_)  ),S).
@@ -247,8 +314,8 @@ encontrarExcecoes_ad(Nome,Nif) :- findall((Nome,Nif),excecao(e_ad(Nome,Nif,_),_)
 
 
 
-
-
+% mostra que só insere contratos com entidade na Base de conhecimento.
+% evolucao(contrato(63,1,300000003,'Aquisicao de Servicos','Concurso Publico','Controlo do trafego aerio ',1,1096,'Lisboa',"07-01-2020")).
 
 
 

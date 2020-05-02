@@ -74,6 +74,7 @@ head([L|R],L).
 % Soma os elementos da lista.
 sum_list([[]],0).
 sum_list([],0).
+sum_list(['N/A'|T],R) :- sum_list(T,R). 
 sum_list([H|T],R) :- sum_list(T,R1), R is R1+H.
 
 
@@ -92,13 +93,13 @@ x_existe_lista(X, [H|T] ,R) :- x_existe_lista(X,T,R).
 
 % Encontrar um adjudicante dado o NIF.
 encontraAdjudicante(Nif,Ad) :- findall(e_ad(Nome,Nif,Morada),
-                                      (e_ad(Nome,Nif,Morada);(excecao(e_ad(Nome,Nif,Morada),TX),TX \= intedito) ),
+                                      (e_ad(Nome,Nif,Morada);(excecao(e_ad(Nome,Nif,Morada),TX),TX \= interdito) ),
                                        Ad).
 
 
 % Encontrar uma adjudicataria por NIF.
 encontraAdjudicataria(Nif,Ada) :- findall(e_ada(Nome,Nif,Morada),
-                                  (e_ada(Nome,Nif,Morada);(excecao(e_ada(Nome,Nif,Morada),TX),TX \= intedito)),
+                                  (e_ada(Nome,Nif,Morada);(excecao(e_ada(Nome,Nif,Morada),TX),TX \= interdito)),
                                   Ada).
 
 
@@ -106,8 +107,11 @@ encontraAdjudicataria(Nif,Ada) :- findall(e_ada(Nome,Nif,Morada),
 % Encontrar um contrato por Id.
 encontraContrato(Id,C) :- findall(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Dat),
                           ( (contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data);
-                            (excecao(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),TX \= intedito)),
+                            (excecao(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),TX \= interdito)),
                             atom_codes(Dat,Data)),
+                            C).
+encontraContrato2(Id,C) :- findall(excecao(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),
+                            excecao(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),
                             C).
 
 
@@ -115,7 +119,7 @@ encontraContrato(Id,C) :- findall(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descric
 
 
 encontraEntidade(Nif ,S) :- findall( Nome ,
-                             (((excecao(e_ada(Nome,Nif,Morada),TX),TX \= intedito);(excecao(e_ad(Nome,Nif,Morada),TX),TX \= intedito)); 
+                             (((excecao(e_ada(Nome,Nif,Morada),TX),TX \= interdito);(excecao(e_ad(Nome,Nif,Morada),TX),TX \= interdito)); 
                              (e_ad(Nome,Nif,Morada);e_ada(Nome,Nif,Morada)) ),
                              S).
 
@@ -162,7 +166,7 @@ encontraAdjudicanteImp(Nif,Ad):-findall(excecao(e_ad(Nome,Nif,Morada),TX),
 
 % Total acumulado de uma entidade encontraAdjudicante
 totalAcumulado(Nif,Tot) :- findall(Custo,(contrato(Id,Nif,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data);
-                                         (excecao(contrato(Id,Nif,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),TX \= intedito)) ,S),
+                                         (excecao(contrato(Id,Nif,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),TX \= interdito)) ,S),
                            sum_list(S,Tot).
 
 % Calcular a soma dos valor dos contratos em vigor respetivos aos anos economicos recebidos como parametro, de uma certa entidade adjudicante e Adjudicataria.
@@ -231,6 +235,22 @@ insereOdenado((X,Y),[(X1,Y1)|L],P) :- Y<Y1, insereOdenado((X,Y),L,P1), append([(
 qsort([],L,L).
 qsort([(X,Y)|T],L1,R) :- insereOdenado((X,Y),L1,L2),qsort(T,L2,R).
 
+
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%   Id Auto
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+encontraMaior(ID) :- findall(Id,
+                          ((contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data);
+                          (excecao(contrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX))))
+                          ,L), maior(L,ID).
+     
+maior([],1).
+maior([H],H1) :-  H1 is H + 1.
+maior([F,S|T], R) :- F > S, maior([F|T],R).
+maior([F,S|T], R) :- F =< S, maior([S|T],R).
+
+%>
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %   TESTES
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -253,7 +273,7 @@ qsort([(X,Y)|T],L1,R) :- insereOdenado((X,Y),L1,L2),qsort(T,L2,R).
 % totalAcumulado(700000003,X).
 % anosEcoData("01-01-2020",Anos).
 
-% encontraContrato(8,R). #intedito.
+% encontraContrato(8,R). #interdito.
 % map1(ano,[("01-01-2020",12000),("01-01-2020",12000),("01-01-2020",12000)],[2020],X).
 % map3(encontraEntidade,[(700000003,5008000),(700000005,5000000),(700000004,130000),(700000001,100000),(700000000,75000),(700000006,50000)],R).
 % map2(ano,[("01-01-2020",12000,365),("01-01-2020",12000,10),("01-01-2020",12000,300)],[2020],X).

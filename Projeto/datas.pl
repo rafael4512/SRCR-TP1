@@ -14,7 +14,7 @@
 
 :- dynamic maior/3.
 :- dynamic verificaPrazo/3.
-
+:- dynamic dataEValida/3.
 
 
 :- dynamic anosEcoData/2.
@@ -39,16 +39,29 @@ stringToNumber("7",7).
 stringToNumber("8",8).
 stringToNumber("9",9).
 
+stringToDelim(45).
+stringToDelim(47).
+
+
+
+% Verifica se a data é válida
+-dataEValida(D,M,A) :- D < 1 ; D > 31.
+-dataEValida(D,M,A) :- M < 1 ; M > 12.
+dataEValida(D, M, A):- x_existe_lista(M, [1,3,5,7,8,10,12],sim),
+				D >= 1, D < 32.
+dataEValida(D, M, A):- x_existe_lista(M, [4,6,9,11],sim),
+				D >= 1, D < 31.
+dataEValida(D, 2, A):- A mod 4 =:= 0, D >= 1, D < 30.
+dataEValida(D, 2, A):- A mod 4 =\= 0, D >= 1, D < 29.
 
 
 % converte uma string(que é um numero), em um inteiro.
  strToNum([X],1,P):-stringToNumber([X],P).
- strToNum([H|T],S,R):-  S2 is S-1 , 
+ strToNum([H|T],S,R):- S2 is S-1 , 
  					   stringToNumber([H],H1),
   					   S1 is H1*(10^S2),
   					   strToNum(T,S2,AUX), 
-  					   R is AUX+S1.	
-
+  					   R is AUX+S1.
 
 % Convete uma data para o formato Americano.(Y-M-D)
 converterData([C0,C1,C2,C3,C4,C5,C6,C7,C8,C9],D):-  strToNum([C6,C7,C8,C9],4,R1),
@@ -59,14 +72,34 @@ converterData([C0,C1,C2,C3,C4,C5,C6,C7,C8,C9],D):-  strToNum([C6,C7,C8,C9],4,R1)
 
 
 
-
 % Converte string Data para os Dia, mes e ano .
 conv_DateToParam([C0,C1,C2,C3,C4,C5,C6,C7,C8,C9],D,M,A):-strToNum([C6,C7,C8,C9],4,A),
 													     strToNum([C3,C4],2,M),
-													     strToNum([C0,C1],2,D).
+													     strToNum([C0,C1],2,D),
+													     dataEValida(D,M,A),!,
+													     stringToDelim(C2),
+													     stringToDelim(C5).
 													   
+conv_DateToParam([C1,C2,C3,C4,C5,C6,C7,C8,C9],D,M,A):-strToNum([C6,C7,C8,C9],4,A),
+													     strToNum([C3,C4],2,M),
+													     strToNum([C1],1,D),
+													     dataEValida(D,M,A),!,
+													     stringToDelim(C2),
+													     stringToDelim(C5).
 
+conv_DateToParam([C0,C1,C2,C4,C5,C6,C7,C8,C9],D,M,A):-strToNum([C6,C7,C8,C9],4,A),
+													     strToNum([C4],1,M),
+													     strToNum([C0,C1],2,D),
+													     dataEValida(D,M,A),!,
+													     stringToDelim(C2),
+													     stringToDelim(C5).
 
+conv_DateToParam([C1,C2,C4,C5,C6,C7,C8,C9],D,M,A):-strToNum([C6,C7,C8,C9],4,A),
+													     strToNum([C4],1,M),
+													     strToNum([C1],1,D),
+													     dataEValida(D,M,A),!,
+													     stringToDelim(C2),
+													     stringToDelim(C5).
 
 % Obtem a data atual.
 curdate(D1,M1,A1):- datime(datime(A1,M1,D1,_,_,_)).
