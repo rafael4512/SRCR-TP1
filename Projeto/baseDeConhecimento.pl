@@ -10,25 +10,25 @@
 % Entidades Adjudicante(Nome,Nif,Morada) ->{V,F}
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-e_ad('CP - Comboios de Portugal',700000000,'Portugal').
-e_ad('BRISA - Autoestradas de Portugal, S.A.',700000001,'Portugal').
-e_ad('NAV Portugal, EPE',700000003,'Portugal').
-e_ad('ULSAM - Unidade Local de Saúde do Alto Minho, EPE',700000004,'Portugal').
-e_ad('CGD - Caixa Geral de Depósitos, SA',700000005,'Portugal').
-e_ad('PME Investimentos - Sociedade de Investimentos, SA',700000006,'Portugal').
+e_ad('CP - Comboios de Portugal',700000000,'Cc Do Duque 14/20, 1249-109, Misericordia Lisboa, Lisboa').
+e_ad('BRISA - Autoestradas de Portugal, S.A.',700000001,'Qta Torre Da Aguilha Edifício Brisa, 2785-599, Sao Domingos Rana Cascais, Lisboa').
+e_ad('NAV Portugal, EPE',700000003,'R D Do Aeroporto De Lisboa Edifício 121 3º, 1700-008, Santa Maria Olivais Lisboa, Lisboa').
+e_ad('ULSAM - Unidade Local de Saúde do Alto Minho, EPE',700000004,'Estr. De Santa Luzia 50, Viana Do Castelo').
+e_ad('CGD - Caixa Geral de Depósitos, SA',700000005,'Av João Xxi 63, 1000-300, Areeiro Lisboa, Lisboa').
+e_ad('PME Investimentos - Sociedade de Investimentos, SA',700000006,'Rua Pedro Homem De Melo, 55, S.3.09, 4150-599 Porto').
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Entidades adjudicatária(Nome,Nif,Morada) ->{V,F}
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-e_ada('PETROGAL, S.A',300000000,'Portugal').
-e_ada('EDP',300000001,'Portugal').
-e_ada('Pingo Doce',300000002,'Portugal').
-e_ada('TAP',300000003,'Portugal').
-e_ada('GALP',300000004,'Portugal').
-e_ada('CTT',300000005,'Portugal').
-e_ada('PRIO SUPPLY, S.A.',300000006,'Portugal').
+e_ada('PETROGAL, S.A',300000000,'R Tomás Da Fonseca Torre C, 1600-209, Sao Domingos Benfica Lisboa, Lisboa').
+e_ada('EDP',300000001,'Av 24 De Julho 12, 1249-300, Misericordia Lisboa, Lisboa').
+e_ada('Pingo Doce',300000002,'R Actor António Silva 7, 1649-033, Lumiar Lisboa, Lisboa').
+e_ada('TAP',300000003,'Aeroporto De Lisboa Efifício 27-8 Sala 1, 1700-008, Santa Maria Olivais Lisboa, Lisboa').
+e_ada('GALP',300000004,'R Tomás Da Fonseca Torre C, 1600-209, Sao Domingos Benfica Lisboa').
+e_ada('CTT',300000005,'Av Dom João Ii 13, 1999-001, Parque Nacoes Lisboa, Lisboa').
+e_ada('PRIO SUPPLY, S.A.',300000006,'Porto De Pesca De Aveiro Lote B, 3830-565, Gafanha Nazare Ilhavo, Aveiro').
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Contratos (ID,NifAd, NifAda, TipoDeContrato, TipoDeProcedimento, Descrição, Valor, Prazo, Local, Data ) -> {V,F}
@@ -36,7 +36,7 @@ e_ada('PRIO SUPPLY, S.A.',300000006,'Portugal').
 
 contrato(1,700000000,300000000,'Aquisicao de Servicos','Consulta Previa','Fornecimento de petrólio',50000,365,'Lisboa',"01-01-2018"). % CP-PETROGAL
 contrato(2,700000000,700000005,'Aquisicao de Servicos','Ajuste Direto','contrato de intermediação financeira',25000,366,'Lisboa',"01-04-2020"). % CP-CGD
-% contrato(3,700000001,300000006,'Aquisicao de Servicos','Concurso Publico','Controlo das portagens ',100000,365,'Lisboa',"06-01-2010"). % BRISA-PRIO
+contrato(3,700000001,300000006,'Aquisicao de Servicos','Concurso Publico','Controlo das portagens ',100000,365,'Lisboa',"06-01-2010"). % BRISA-PRIO
 contrato(4,700000004,300000001,'Aquisicao de Servicos','Consulta Previa','Fornecimento de energia',100000,365,'Viana do Castelo',"06-01-2013"). % ULSAM-EDP
 contrato(5,700000004,300000004,'Aquisicao de Servicos','Concurso Publico','Fornecimento de Gas Natural ',30000,365,'Viana do Castelo',"03-01-2010"). % ULSAM-GALP
 contrato(6,700000003,300000003,'Aquisicao de Servicos','Concurso Publico','Controlo do trafego aerio ',5000000,1096,'Lisboa',"06-01-2017"). % NAV-TAP
@@ -47,7 +47,7 @@ contrato(10,700000005,700000004,'Empreitadas de obras públicas','Consulta Previ
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Conhecimento imperfeito
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%-------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 excecao(e_ad('Municipio de Moncao, S.A',700000007,'Moncao ou Mazedo'),impreciso).
 excecao(e_ad('EDM - Empresa de Desenvolvimento Mineiro',700000008,'Porto ou Lisboa'),impreciso).
@@ -63,37 +63,10 @@ excecao(contrato(11,700000003,300000005,'Aquisicao de Servicos','Ajuste Direto',
 
 
 
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% teste do documento de apoio
-
-% e_ad(municipio_de_alto_de_basto,705330336,portugal).
-% e_ada(associados_sociedade_de_advogados_sp_rl,702675112,portugal).
-% contrato(1,705330336,702675112,aquisicao_de_servicos,consulta_previa,assessoria_juridica,13599,547,alto_de_basto,"11-02-2020").
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Conhecimento Adicionado pelo predicado X.
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-
-
-
-
-
-% 'CP - Comboios De Portugal' - 'Cc Do Duque 14/20, 1249-109, Misericordia Lisboa, Lisboa'
-% 'Brisa - Autoestradas De Portugal, S.A.' - 'Qta Torre Da Aguilha Edifício Brisa, 2785-599, Sao Domingos Rana Cascais, Lisboa'
-% 'Nav Portugal, Epe' - 'R D Do Aeroporto De Lisboa Edifício 121 3º, 1700-008, Santa Maria Olivais Lisboa, Lisboa'
-% 'Ulsam - Unidade Local De Saude Do Alto Minho' - 'Estr. De Santa Luzia 50, Viana Do Castelo'
-% 'Cgd - Caixa Geral De Depósito, S.A.' - 'Av João Xxi 63, 1000-300, Areeiro Lisboa, Lisboa'
-% 'Pme Investimentos - Sociedade De Investimentos, S.A.' - 'Rua Pedro Homem De Melo, 55, S.3.09, 4150-599 Porto'
-% 
-% 
-% 'Petrogal, S.A.' - 'R Tomás Da Fonseca Torre C, 1600-209, Sao Domingos Benfica Lisboa, Lisboa'
-% 'Edp' - 'Av 24 De Julho 12, 1249-300, Misericordia Lisboa, Lisboa'
-% 'Pingo Doce' -  'R Actor António Silva 7, 1649-033, Lumiar Lisboa, Lisboa'
-% 'Tap Air Portugal' - 'Aeroporto De Lisboa Efifício 27-8 Sala 1, 1700-008, Santa Maria Olivais Lisboa, Lisboa'
-% 'Galp' - 'R Tomás Da Fonseca Torre C, 1600-209, Sao Domingos Benfica Lisboa'
-% 'Ctt - Correios De Portugal, S.A.' - 'Av Dom João Ii 13, 1999-001, Parque Nacoes Lisboa, Lisboa'
-% 'Prio Supply, S.A.' - 'Porto De Pesca De Aveiro Lote B, 3830-565, Gafanha Nazare Ilhavo, Aveiro'
 
 
 
