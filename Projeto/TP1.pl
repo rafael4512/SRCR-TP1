@@ -190,15 +190,15 @@ novoAdjudicataria(Nome,Nif,Morada,interdito):- evolucao(excecao(e_ada(('I',Nome)
 
 % ************* Contratos **************************
 
-% Insere um contrato Incerto
+% Insere um contrato incerto.
 novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,incerto):- processaContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,R),
   evolucao(excecao(R,incerto)).
 
-% Insere um contrato Incerto.
+% Insere um contrato impreciso.
 novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,impreciso):- processaContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,R),
   evolucao(excecao(R,impreciso)).
 
-% Insere um contrato Interdito.
+% Insere um contrato interdito.
 novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,interdito):- evolucao(excecao(contrato(('I',Id),Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),interdito)),
   processaContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,R),
   evolucao(excecao(R,info_interdito)).
@@ -218,42 +218,39 @@ processa(X,X).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % ************* Adjudicante **************************
-% Remove conhecimento imperfeito interdito, referente a entidade adjudicataria.
+% Remove conhecimento imperfeito , referente a entidade adjudicante.
 removeAdjudicante(Nif):- removeInterdito_ad(Nif),
   encontraAdjudicante2(Nif,[C]),
   involucao(C).
-% Adicionar conhecimento imperfeito excepto interdito, referente a entidade adjudicataria.
 removeAdjudicante(Nif):- encontraAdjudicante2(Nif,[C]),
   involucao(C).
-% 
+% Remove uma entidade adjudicante interdita.
 removeInterdito_ad(Nif):- findall(evolucao(excecao(e_ad(('I',Nome),('I',Nif),Morada),TX)),
   evolucao(excecao(e_ad(('I',Nome),('I',Nif),Morada),TX)),[S]),
   involucao(S).
 % ************* Adjudicataria **************************
-
+% Remove conhecimento imperfeito , referente a entidade adjudicataria.
 removeAdjudicataria(Nif):- removeInterdito_ada(Nif),
   encontraAdjudicataria2(Nif,[C]),
   involucao(C).
-
 removeAdjudicataria(Nif):- encontraAdjudicataria2(Nif,[C]),
   involucao(C).
 
-
+% Remove uma entidade adjudicataria interdita.
 removeInterdito_ada(Nif):- findall(evolucao(excecao(e_ada(('I',Nome),('I',Nif),Morada),TX)),
   evolucao(excecao(e_ada(('I',Nome),('I',Nif),Morada),TX)),[S]),
   involucao(S).
 
 % ************* Contratos **************************
-
+% Remove conhecimento imperfeito interdito, referente ao contrato .
 removeContrato(Id):-removeInterdito(Id),
   encontraContrato2(Id,[C]),
   involucao(C).
-
 removeContrato(Id):-encontraContrato2(Id,[C]),
   involucao(C). 
 
 
-
+% Remove uma contrato interdito.
 removeInterdito(Id):-findall(excecao(contrato(('I',Id),Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),
   excecao(contrato(('I',Id),Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),TX),[S]),
   involucao(S).
@@ -261,21 +258,23 @@ removeInterdito(Id):-findall(excecao(contrato(('I',Id),Nif_ad,Nif_ada,TipoC,Tipo
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Procedimentos de substituição do conhecimento ImPerfeito.
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-
-%Só se substui por conhecimento perfeito
-
+%Só se substui por conhecimento perfeito.
+ 
+% Substui conhecimento ImPerfeito por conhecimento perfeito,relativo às entidades Adjudicantes .
 subsE_ad(Nome,Nif,Morada):- findall(excecao(e_ad(Nome,Nif,M),P),excecao(e_ad(Nome,Nif,M),P),S),
                             length(S,1),
                             involucao(excecao(e_ad(Nome,Nif,M),P)),
                             novoAdjudicante(Nome,Nif,Morada).
 
+
+% Substui conhecimento Imperfeito por conhecimento perfeito,relativo às entidades Adjudicatarias.
 subsE_ada(Nome,Nif,Morada):- findall(excecao(e_ada(Nome,Nif,M),P),excecao(e_ada(Nome,Nif,M),P),S),
                             length(S,1),
                             involucao(excecao(e_ada(Nome,Nif,M),P)),
                             novoAdjudicataria(Nome,Nif,Morada).
 
 
-
+% Substui conhecimento Imperfeito por conhecimento perfeito,relativo aos contratos.
 subsContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data):- encontraContrato2(Id,[C]),
   involucao(C), 
   removeInterdito(Id),
@@ -312,7 +311,6 @@ subsContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,TX):
 % -*-
 
 
-% 
 % evolucao(contrato(60,700000003,300000003,'Aquisicao de Servicos','Concurso Publico','Controlo do trafego aerio ',5000000,1096,'Lisboa',"06-01-2020")).
 
 
@@ -335,16 +333,10 @@ subsContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,TX):
 % -*-
 
 
-
-
 % mostra que só insere contratos com entidade na Base de conhecimento.
 % evolucao(contrato(63,1,300000003,'Aquisicao de Servicos','Concurso Publico','Controlo do trafego aerio ',1,1096,'Lisboa',"07-01-2020")).
-
-
-
 %novoContrato(3,700000001,300000006,'Aquisicao de Servicos',interdito('Concurso Publico'),'Controlo das portagens ',100000,365,'Lisboa',"06-01-2010",interdito).
 %novoContrato(3,700000001,300000006,'Aquisicao de Servicos',impreciso('Concurso Publico','Consulta Previa'),'Controlo das portagens ',incerto,365,'Lisboa',"06-01-2010",impreciso).
-
 % findall((('I',Id),Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),excecao(contrato(('I',3),Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),_),S).
 
 
