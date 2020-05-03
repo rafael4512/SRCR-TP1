@@ -1,25 +1,6 @@
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Datas 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% os dinamic é para tirar em PRICÍPIO .... TEMOS DE TESTAR !!!!!!
-:- dynamic stringToNumber/2.
-:- dynamic strToNum/3.
-:- dynamic converterData/2.
-:- dynamic conv_DateToParam/4.
-
-:- dynamic dateToDays/4.
-:- dynamic ytoDay/2.
-:- dynamic mtoDay/3.
-:- dynamic countmonth/3.
-
-:- dynamic maior/3.
-:- dynamic verificaPrazo/3.
-:- dynamic dataEValida/3.
-
-
-:- dynamic anosEcoData/2.
-:- dynamic diasAno/2.
-:- dynamic ano/2.
 
 
 

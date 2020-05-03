@@ -49,14 +49,14 @@ contrato(10,700000005,700000004,'Empreitadas de obras públicas','Consulta Previ
 % Conhecimento imperfeito
 %-------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-excecao(e_ad('Municipio de Moncao, S.A',700000007,'Moncao ou Mazedo'),impreciso).
-excecao(e_ad('EDM - Empresa de Desenvolvimento Mineiro',700000008,'Porto ou Lisboa'),impreciso).
-
+excecao(e_ad('Municipio de Moncao, S.A',700000007,impreciso('Moncao ou Mazedo')),impreciso).
+excecao(e_ad('EDM - Empresa de Desenvolvimento Mineiro',700000008,impreciso('Lisboa')),impreciso).
+excecao(e_ad(('I','Universidade do Minho, U.M'),('I',700000009),interdito('Largo do Paço, 4704-553 Braga')),interdito).
+excecao(e_ad('Universidade do Minho, U.M',700000009,'-'),info_interdito).
 
 excecao(e_ada('REPSOL Portugues, S.A',300000007,'N/A'),incerto).
-excecao(e_ada('N/A',300000008,'Braga'),incerto).
-excecao(e_ada('MOTA-ENGIL',300000009,'Porto'),incerto).
-excecao(e_ada('RADIO POPULAR',300000010,'Porto ou Lisboa'),impreciso).
+excecao(e_ada('MOTA-ENGIL',300000009,'N/A'),incerto).
+excecao(e_ada('RADIO POPULAR',300000010,impreciso('Porto','Famalicão')),impreciso).
 
 excecao(contrato(('I',8),700000006,300000005,'Aquisicao de Servicos','Ajuste Direto',interdito('Distribuicao de correio'),3000,365,'Porto',"06-01-2020"),interdito).
 excecao(contrato(8,700000006,300000005,'Aquisicao de Servicos','Ajuste Direto','-',3000,365,'Porto',"06-01-2020"),info_interdito).
@@ -64,10 +64,8 @@ excecao(contrato(11,700000003,300000005,'Aquisicao de Servicos','Ajuste Direto',
 
 
 
-
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Conhecimento Adicionado pelo predicado X.
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+%-------------------------------- - - - - - - - - - -  -  -  -  -   -
+%-------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 
 
