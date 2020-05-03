@@ -35,7 +35,7 @@ e_ada('PRIO SUPPLY, S.A.',300000006,'Porto De Pesca De Aveiro Lote B, 3830-565, 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 contrato(1,700000000,300000000,'Aquisicao de Servicos','Consulta Previa','Fornecimento de petrólio',50000,365,'Lisboa',"01-01-2018"). % CP-PETROGAL
-contrato(2,700000000,700000005,'Aquisicao de Servicos','Ajuste Direto','contrato de intermediação financeira',25000,366,'Lisboa',"01-04-2020"). % CP-CGD
+contrato(2,700000000,700000005,'Aquisicao de Servicos','Ajuste Direto','contrato de intermediação financeira',2500,366,'Lisboa',"01-04-2020"). % CP-CGD
 contrato(3,700000001,300000006,'Aquisicao de Servicos','Concurso Publico','Controlo das portagens ',100000,365,'Lisboa',"06-01-2010"). % BRISA-PRIO
 contrato(4,700000004,300000001,'Aquisicao de Servicos','Consulta Previa','Fornecimento de energia',100000,365,'Viana do Castelo',"06-01-2013"). % ULSAM-EDP
 contrato(5,700000004,300000004,'Aquisicao de Servicos','Concurso Publico','Fornecimento de Gas Natural ',30000,365,'Viana do Castelo',"03-01-2010"). % ULSAM-GALP

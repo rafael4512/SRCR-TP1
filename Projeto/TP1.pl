@@ -191,17 +191,17 @@ novoAdjudicataria(Nome,Nif,Morada,interdito):- evolucao(excecao(e_ada(('I',Nome)
 % ************* Contratos **************************
 
 % Insere um contrato incerto.
-novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,incerto):- processaContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,R),
-  evolucao(excecao(R,incerto)).
+novoContrato(Id1,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,incerto):- encontraMaior(Id),processaContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,R),
+  evolucao(excecao(R,incerto)),write('ID:'),write(Id).
 
 % Insere um contrato impreciso.
-novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,impreciso):- processaContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,R),
-  evolucao(excecao(R,impreciso)).
+novoContrato(Id1,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,impreciso):- encontraMaior(Id),processaContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,R),
+  evolucao(excecao(R,impreciso)),write('ID:'),write(Id).
 
 % Insere um contrato interdito.
-novoContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,interdito):- evolucao(excecao(contrato(('I',Id),Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),interdito)),
+novoContrato(Id1,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,interdito):- encontraMaior(Id),evolucao(excecao(contrato(('I',Id),Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data),interdito)),
   processaContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,R),
-  evolucao(excecao(R,info_interdito)).
+  evolucao(excecao(R,info_interdito)),write('ID:'),write(Id).
 
 % Retorna o novo contrato alterado, de forma a ocultar a informação.
 processaContrato(Id,Nif_ad,Nif_ada,TipoC,TipoP,Descricao,Custo,Prazo,Local,Data,contrato(Id,R2,R3,R4,R5,R6,R7,R8,R9,R10)):-
